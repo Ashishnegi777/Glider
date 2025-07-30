@@ -122,3 +122,53 @@ function createSlideElement(index) {
 
 	return slide;
 }
+
+function initializeSlides() {
+	track = document.querySelector(".slide-track");
+	track.innerHTML = "";
+
+	state.sliderWidth = state.isMobile ? 215 : 300;
+	state.slides = [];
+
+	for (let i = 0; i < totalSlides; i++) {
+		const slide = createSlideElement(i);
+		track.appendChild(slide);
+		state.slides.push(slide);
+	}
+
+	for (let i = 0; i < state.slides.length; i++) {
+		if (i % 2 == 0) slideUp(state.slides[i]);
+		else slideDown(state.slides[i]);
+	}
+
+	slideIn();
+
+	const totalTrackWidth = state.sliderWidth * totalSlides;
+	track.style.width = `${totalTrackWidth}px`;
+	const initialOffset = -(state.sliderWidth * totalSlideCount * 2);// shifting the slider to the 2 copies ahead
+
+	state.currentX = initialOffset;
+	state.targetX = initialOffset;
+}
+
+
+
+function slideIn() {
+	let ele = document.querySelector(".slide-track");
+	const slide = document.querySelectorAll(".slide");
+	ele.style.rotate = "-0.2deg";
+	ele.style.overflow = "unset";
+
+
+	gsap.from(slide,{
+		scale: 0.2,
+		translateY: 800,
+		rotate: 10,
+		delay: 0.1,
+		stagger: 0.3,
+		duration: 1.2,
+		ease: "powe3.Out",
+	});
+
+
+}
