@@ -172,3 +172,18 @@ function slideIn() {
 
 
 }
+
+function updateSlidePosition() {
+	const sequenceWidth = state.sliderWidth * totalSlideCount;
+
+	if (state.currentX > -sequenceWidth) {
+		state.currentX -= sequenceWidth * 2;
+		state.targetX -= sequenceWidth * 2;
+	}
+	 else if (state.currentX < -sequenceWidth * (copies - 2)) {
+		state.currentX += sequenceWidth * 2;
+		state.targetX += sequenceWidth * 2;
+	}
+
+	track.style.transform = `translate3d(${state.currentX}px, 0, 0)`;
+}
