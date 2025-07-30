@@ -74,3 +74,51 @@ function headerRevel(){
 		ease: "power2.in",
 	})
 }
+
+function createSlideElement(index) {
+	const slide = document.createElement("div");
+	slide.className = "slide";
+
+	const width = state.isMobile ? 175 : 300;
+	slide.style.width = `${width}px`;
+	slide.style.flexShrink = "0";
+
+	const imageContainer = document.createElement("div");
+	imageContainer.className = "slide-image";
+
+	const img = document.createElement("img");
+	const dataIndex = index % totalSlideCount;
+	img.src = sliderData[dataIndex].img;
+	img.alt = sliderData[dataIndex].title;
+
+	const overlay = document.createElement("div");
+	overlay.className = "slide-overlay";
+
+	const title = document.createElement("p");
+	title.className = "project-title";
+	title.textContent = sliderData[dataIndex].title;
+
+	const arrow = document.createElement("div");
+	arrow.className = "project-arrow";
+	arrow.innerHTML = `
+    <svg viewBox="0 0 24 24">
+    <path d="M7 17L17 7M17 7H7M17 7V17"/>
+    </svg>
+    `;
+
+	//checking if the user draging or clicking
+	slide.addEventListener("click", (e) => {
+		e.preventDefault();
+		if (state.dragDistance < 8 && !state.hasActualDragged) {
+			window.location.href = sliderData[dataIndex].url;
+		}
+	});
+
+	overlay.appendChild(title);
+	overlay.appendChild(arrow);
+	imageContainer.appendChild(img);
+	slide.appendChild(imageContainer);
+	slide.appendChild(overlay);
+
+	return slide;
+}
