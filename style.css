@@ -11,7 +11,7 @@
 }
 
 body{
-    font-family: "DM monospace";
+    font-family: "DM monospace", monospace;
     background-color: var(--black);
     color: var(--white);
     overflow: hidden;
@@ -74,7 +74,10 @@ header{
     width: 10rem;
 }
 
-
+.nav-links{
+    display: flex;
+    gap: 2rem;
+}
 .slider{
     position: relative;
     width: 100vw;
