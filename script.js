@@ -1,7 +1,5 @@
-import { isDataView } from "util/types";
 import { sliderData } from "./sliderData";
 import gsap from "gsap";
-import { stat } from "fs";
 
 gsap.ticker.lagSmoothing(10000, 16);
 
@@ -44,6 +42,7 @@ let count = document.querySelector(".loader-counter");
 
 function counter (){
 	let numCount = 0;
+	
 	function update(){
 
 		if(numCount > 100) return;
@@ -55,7 +54,7 @@ function counter (){
 			numCount = 100;
 		} 
 		
-		count.textContent = numCount + "%";
+		count.textContent = `${numCount}%`;
 		document.querySelector(".loader-bar").style.width = `${numCount}%`;
 		
 		let dely = Math.floor(Math.random() * 200 ) + 50;
@@ -138,10 +137,6 @@ function initializeSlides() {
 		state.slides.push(slide);
 	}
 
-	for (let i = 0; i < state.slides.length; i++) {
-		if (i % 2 == 0) slideUp(state.slides[i]);
-		else slideDown(state.slides[i]);
-	}
 
 	slideIn();
 
@@ -218,6 +213,13 @@ function updateMovingState() {
 	);
 }
 
+function animate() {
+	state.currentX += (state.targetX - state.currentX) * config.LERP_FACTOR;
+	updateMovingState();
+	updateSlidePosition();
+	updateParallax();
+	requestAnimationFrame(animate);
+}
 
 function handleWheel(e) {
 	if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;// if user scrolling/swiping horizontally then reutrn it
@@ -285,3 +287,32 @@ function handleMouseUp(e){
 	setTimeout(()=> state.hasActualDragged = false, 80);
 }
 
+function handleResize() {
+	checkMobile();
+	initializeSlides();
+}
+
+function initializeEventListeners() {
+	const slider = document.querySelector(".slider");
+
+	slider.addEventListener("wheel", handleWheel, { passive: false });
+	slider.addEventListener("touchstart", handleTouchStart, { passive: true });
+	slider.addEventListener("touchmove", handleTouchMove, { passive: true });
+	slider.addEventListener("touchend", handleTouchEnd, { passive: true });
+	slider.addEventListener("mousedown", handleMouseDown);
+	slider.addEventListener("mouseleave", handleMouseUp);
+	slider.addEventListener("dragstart", (e) => e.preventDefault());
+
+	document.addEventListener("mousemove", handleMouseMove);
+	document.addEventListener("mouseup", handleMouseUp);
+	window.addEventListener("resize", handleResize);
+}
+
+function initializeSlider() {
+	checkMobile();
+	initializeSlides();
+	initializeEventListeners();
+	animate();
+}
+
+document.addEventListener("DOMContentLoaded", initializeSlider);
