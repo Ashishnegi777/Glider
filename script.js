@@ -187,3 +187,31 @@ function updateSlidePosition() {
 
 	track.style.transform = `translate3d(${state.currentX}px, 0, 0)`;
 }
+
+
+
+function updateParallax() {
+	const viewportCenter = window.innerWidth / 2;
+	state.slides.forEach((slide) => {
+		const img = slide.querySelector("img");
+		if (!img) return;
+		const rect = slide.getBoundingClientRect();
+		const slideCenter = rect.left + rect.width / 2;
+		const offset = (slideCenter - viewportCenter) * -0.2;
+		img.style.transform = `translateX(${offset}px) scale(2)`;
+	});
+}
+
+function updateMovingState() {
+	state.velocity = Math.abs(state.currentX - state.lastCurrentX);
+	state.lastCurrentX = state.currentX;
+
+	const isSlow = state.velocity < 0.15;
+	const stillLongEnough = Date.now() - state.lastScrollTime > 200;
+	state.isMoving = state.hasActualDragged || !isSlow || !stillLongEnough;
+
+	document.documentElement.style.setProperty(
+		"--slider-moving",
+		state.isMoving ? "1" : "0"
+	);
+}
