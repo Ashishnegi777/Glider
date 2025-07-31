@@ -1,5 +1,7 @@
+import { isDataView } from "util/types";
 import { sliderData } from "./sliderData";
 import gsap from "gsap";
+import { stat } from "fs";
 
 gsap.ticker.lagSmoothing(10000, 16);
 
@@ -226,4 +228,23 @@ function handleWheel(e) {
 		Math.min(delta, config.MAX_VELOCITY),
 		-config.MAX_VELOCITY
 	);
+}
+
+function handleTouchStart(e){
+	state.isDragging = true;
+	state.startX = e.touches[0].clientX;//getting the first touch in horizontal direction
+	state.lastX = state.targetX;
+	state.dragDistance = 0;
+	state.hasActualDragged = false;//resetting the flag
+	state.lastScrollTime = Date.now();
+}
+
+function handleTouchMove(e){
+	if(!state.isDragging) return;
+
+	const deltaX = (e.touches[0].clientX - state.currentX) * 1.4;// how far user scrolled
+	state.targetX = deltaX + state.lastX;// new target 
+	state.dragDistance = Math.abs(deltaX);// saving the drag distance 
+	state.hasActualDragged = deltaX - dragDistance > 5;// if user drag more then 5px
+	state.lastScrollTime = Date.now(); //saving current time when user scroll
 }
