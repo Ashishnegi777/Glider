@@ -215,3 +215,15 @@ function updateMovingState() {
 		state.isMoving ? "1" : "0"
 	);
 }
+
+
+function handleWheel(e) {
+	if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;// if user scrolling/swiping horizontally then reutrn it
+	e.preventDefault();// preventing the default behaviour
+	state.lastScrollTime = Date.now();
+	const delta = e.deltaY * config.SCROLL_SPEED;
+	state.targetX -= Math.max(
+		Math.min(delta, config.MAX_VELOCITY),
+		-config.MAX_VELOCITY
+	);
+}
