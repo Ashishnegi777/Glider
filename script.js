@@ -248,3 +248,21 @@ function handleTouchMove(e){
 	state.hasActualDragged = deltaX - dragDistance > 5;// if user drag more then 5px
 	state.lastScrollTime = Date.now(); //saving current time when user scroll
 }
+
+
+function handleTouchEnd(){
+	state.isDragging = false;
+	setTimeout(()=> (state.hasActualDragged = false), 80);
+}
+
+function handleMouseDown(e){
+	e.preventDefault();// preving selecting text or default behaviours 
+	state.isDragging = true;
+	state.startX = e.clientX;// used to calculate how far mouse moved
+	state.lastMouseX = e.clientX;// track the current mouse position 
+	state.lastX = state.targetX;//store the slider position before drag starts 
+	state.dragDistance= 0;
+	state.lastScrollTime = Date.now();
+	state.hasActualDragged =false;
+	document.body.style.cursor = "grabbing";
+}
