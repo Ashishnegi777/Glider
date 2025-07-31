@@ -266,3 +266,22 @@ function handleMouseDown(e){
 	state.hasActualDragged =false;
 	document.body.style.cursor = "grabbing";
 }
+
+
+function handleMouseMove(e){
+	if(!state.isDragging) return;
+
+	const deltaX  = e.clientX - state.startX;
+	state.targetX += deltaX;
+	state.lastCurrentX  = e.clientX;
+	state.dragDistance = Math.abs(deltaX);
+	state.hasActualDragged = state.dragDistance > 5;
+	state.lastScrollTime = Date.now();
+}
+
+function handleMouseUp(e){
+	state.isDragging = false;
+	document.body.style.cursor = "";
+	setTimeout(()=> state.hasActualDragged = false, 80);
+}
+
