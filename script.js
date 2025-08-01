@@ -1,7 +1,7 @@
 import { sliderData } from "./sliderData";
 import gsap from "gsap";
 
-gsap.ticker.lagSmoothing(10000, 16);
+// gsap.ticker.lagSmoothing(10000, 16);
 
 
 const config = {
@@ -69,10 +69,10 @@ counter();
 
 function headerRevel(){
 	gsap.to("header", {
-		y: -10000,
-		duration: 0.5,
-		delay: 0.2,
-		ease: "power2.in",
+		y: -2000,
+		duration: 0.4,
+		delay: 0.1,
+		ease: "power2.inOut",
 	})
 }
 
@@ -161,7 +161,7 @@ function slideIn() {
 		scale: 0.2,
 		translateY: 800,
 		rotate: 10,
-		delay: 0.1,
+		delay: 0.3,
 		stagger: 0.3,
 		duration: 1.2,
 		ease: "powe3.Out",
